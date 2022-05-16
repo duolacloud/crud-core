@@ -5,7 +5,7 @@ type SortField struct {
 
 type PageQuery[T any] struct {
 	Filter Filter[T]
-	Size   int
-	Limit  int
+	Page   int64
+	Limit  int64
 	Sort   []*SortField
 }
