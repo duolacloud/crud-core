@@ -14,7 +14,7 @@ type UserEntity struct {
 }
 
 func TestNoopService(t *testing.T) {
-	s := NewNoOpService[UserDTO, UserDTO, UserDTO]()
+	s := NewNoopService[UserDTO, UserDTO, UserDTO]()
 	u, err := s.Create(context.TODO(), &UserDTO{
 		ID: "1",
 	})

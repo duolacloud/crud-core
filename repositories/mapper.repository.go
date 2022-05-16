@@ -22,7 +22,7 @@ func NewMapperRepository[DTO any, CreateDTO any, UpdateDTO any, Entity any, Crea
 	}
 }
 
-func (r *mapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Create(c context.Context, createDTO *CreateDTO) (*DTO, error) {
+func (r *mapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Create(c context.Context, createDTO *CreateDTO, opts ...types.CreateOption) (*DTO, error) {
 	createEntity := r.mapper.ConvertToCreateEntity(c, createDTO)
 
 	entity, err := r.repo.Create(c, createEntity)
@@ -37,7 +37,7 @@ func (r *mapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 	return r.repo.Delete(c, id)
 }
 
-func (r *mapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO) (*DTO, error) {
+func (r *mapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
 	entity := r.mapper.ConvertToUpdateEntity(c, updateDTO)
 
 	updatedEntity, err := r.repo.Update(c, id, entity)
@@ -65,4 +65,10 @@ func (r *mapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 	}
 
 	return r.mapper.ConvertToDTOs(c, entities), nil
+}
+
+func (r *mapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
+	entityQuery := r.mapper.ConvertQuery(c, query)
+
+	return r.repo.Count(c, entityQuery)
 }
