@@ -4,8 +4,8 @@ type SortField struct {
 }
 
 type PageQuery[T any] struct {
-	Filter Filter[T]
-	Page   int64
+	Filter map[string]interface{}
+	Offset   int64
 	Limit  int64
-	Sort   []*SortField
+	Sort   []string
 }

@@ -1,39 +1,19 @@
 package types
 
-type BooleanFieldComparisons struct {
-	Is bool
-	IsNot bool
-}
+type FilterComparisonOperators string
 
-type CommonFieldComparisonBetweenType[FieldType any] struct {
-	Lower FieldType
-	Upper FieldType
-}
+const (
+	FilterComparisonOperatorsEq    FilterComparisonOperators = "eq"
+	FilterComparisonOperatorsNeq   FilterComparisonOperators = "neq"
+	FilterComparisonOperatorsGt    FilterComparisonOperators = "gt"
+	FilterComparisonOperatorsGte   FilterComparisonOperators = "gte"
+	FilterComparisonOperatorsLt    FilterComparisonOperators = "lt"
+	FilterComparisonOperatorsLte   FilterComparisonOperators = "lte"
+	FilterComparisonOperatorsIn    FilterComparisonOperators = "in"
+	FilterComparisonOperatorsNotIn FilterComparisonOperators = "notin"
 
-type CommonFieldComparisonType[FieldType any] struct {
-	BooleanFieldComparisons
-	Eq FieldType
-	Neq FieldType
-	Gt FieldType
-	Gte FieldType
-	Lt FieldType
-	Lte FieldType
-	In []FieldType
-	NotIn []FieldType
-	Between CommonFieldComparisonBetweenType[FieldType]
-	NotBetween CommonFieldComparisonBetweenType[FieldType]
-}
-
-type StringFieldComparisons struct {
-	CommonFieldComparisonType[string]
-	Like string
-	NotLike string
-	Ilike string
-	NotILike string
-}
-
-type FilterFieldComparison [FieldType any] struct {
-	BooleanFieldComparisons
-	StringFieldComparisons
-	CommonFieldComparisonType[FieldType]
-}
+	FilterComparisonOperatorsIs    FilterComparisonOperators = "is"
+	FilterComparisonOperatorsIsNot FilterComparisonOperators = "isnot"
+	FilterComparisonOperatorsLike  FilterComparisonOperators = "Like"
+	FilterComparisonOperatorsIlike FilterComparisonOperators = "iLike"
+)

@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"testing"
+	"duolacloud.com/duolacloud/crud-core/types"
 )
 
 type UserDTO struct {
@@ -22,6 +23,14 @@ func TestNoopService(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	t.Logf("haha: %v", u)
+
+	us, err := s.Query(context.TODO(), &types.PageQuery[UserDTO]{
+
+	})
+
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("haha: %v", us)
 }
