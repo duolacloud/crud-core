@@ -17,4 +17,6 @@ type CrudRepository[DTO any, CreateDTO any, UpdateDTO any] interface {
 		filter map[string]interface{},
 		aggregateQuery *types.AggregateQuery,
 	) ([]*types.AggregateResponse, error)
+
+	CursorQuery(c context.Context, query *types.CursorQuery) ([]*DTO, *types.CursorExtra, error)
 }

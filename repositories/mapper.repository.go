@@ -80,3 +80,7 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 ) ([]*types.AggregateResponse, error) {
 	return r.repo.Aggregate(c, filter, aggregateQuery)
 }
+
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) CursorQuery(c context.Context, query *types.CursorQuery) ([]*DTO, *types.CursorExtra, error) {
+	return r.repo.CursorQuery(c, query)
+}
