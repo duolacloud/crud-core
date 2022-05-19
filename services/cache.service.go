@@ -37,11 +37,11 @@ func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id type
 	return s.service.Get(c, id)
 }
 
-func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery[DTO]) ([]*DTO, error) {
+func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
 	return s.service.Query(c, query)
 }
 
-func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
+func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery) (int64, error) {
 	return s.service.Count(c, query)
 }
 

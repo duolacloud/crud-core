@@ -28,11 +28,11 @@ func (s *noopService[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types
 	return nil, nil
 }
 
-func (s *noopService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery[DTO]) ([]*DTO, error) {
+func (s *noopService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
 	return nil, nil
 }
 
-func (s *noopService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
+func (s *noopService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery) (int64, error) {
 	return 0, nil
 }
 

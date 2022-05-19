@@ -6,17 +6,13 @@ import (
 	"duolacloud.com/duolacloud/crud-core/types"
 )
 
-type UserDTO struct {
-	ID string
-}
-
-type UserEntity struct {
+type UserDTO2 struct {
 	ID string
 }
 
 func TestNoopService(t *testing.T) {
-	s := NewNoopService[UserDTO, UserDTO, UserDTO]()
-	u, err := s.Create(context.TODO(), &UserDTO{
+	s := NewNoopService[UserDTO2, UserDTO2, UserDTO2]()
+	u, err := s.Create(context.TODO(), &UserDTO2{
 		ID: "1",
 	})
 
@@ -25,7 +21,7 @@ func TestNoopService(t *testing.T) {
 	}
 	t.Logf("haha: %v", u)
 
-	us, err := s.Query(context.TODO(), &types.PageQuery[UserDTO]{
+	us, err := s.Query(context.TODO(), &types.PageQuery{
 
 	})
 

@@ -35,11 +35,11 @@ func (s *crudService[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types
 	return s.repo.Get(c, id)
 }
 
-func (s *crudService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery[DTO]) ([]*DTO, error) {
+func (s *crudService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
 	return s.repo.Query(c, query)
 }
 
-func (s *crudService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
+func (s *crudService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery) (int64, error) {
 	return s.repo.Count(c, query)
 }
 

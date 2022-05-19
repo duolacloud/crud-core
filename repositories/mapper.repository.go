@@ -56,7 +56,7 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 	return r.mapper.ConvertToDTO(c, entity), nil
 }
 
-func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Query(c context.Context, query *types.PageQuery[DTO]) ([]*DTO, error) {
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
 	entityQuery := r.mapper.ConvertQuery(c, query)
 
 	entities, err := r.repo.Query(c, entityQuery)
@@ -67,7 +67,7 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 	return r.mapper.ConvertToDTOs(c, entities), nil
 }
 
-func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Count(c context.Context, query *types.PageQuery) (int64, error) {
 	entityQuery := r.mapper.ConvertQuery(c, query)
 
 	return r.repo.Count(c, entityQuery)
@@ -82,5 +82,10 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) CursorQuery(c context.Context, query *types.CursorQuery) ([]*DTO, *types.CursorExtra, error) {
-	return r.repo.CursorQuery(c, query)
+	entities, extra, err := r.repo.CursorQuery(c, query)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return r.mapper.ConvertToDTOs(c, entities), extra, nil
 }
