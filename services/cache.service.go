@@ -44,3 +44,11 @@ func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query
 func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
 	return s.service.Count(c, query)
 }
+
+func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Aggregate(
+	c context.Context,
+	filter map[string]interface{},
+	aggregateQuery *types.AggregateQuery,
+) ([]*types.AggregateResponse, error) {
+	return s.service.Aggregate(c, filter, aggregateQuery)
+}

@@ -72,3 +72,11 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 
 	return r.repo.Count(c, entityQuery)
 }
+
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Aggregate(
+	c context.Context,
+	filter map[string]interface{},
+	aggregateQuery *types.AggregateQuery,
+) ([]*types.AggregateResponse, error) {
+	return r.repo.Aggregate(c, filter, aggregateQuery)
+}

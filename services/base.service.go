@@ -42,3 +42,11 @@ func (s *crudService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query 
 func (s *crudService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
 	return s.repo.Count(c, query)
 }
+
+func (s *crudService[DTO, CreateDTO, UpdateDTO]) Aggregate(
+	c context.Context,
+	filter map[string]interface{},
+	aggregateQuery *types.AggregateQuery,
+) ([]*types.AggregateResponse, error) {
+	return s.repo.Aggregate(c, filter, aggregateQuery)
+}

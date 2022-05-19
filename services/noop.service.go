@@ -35,3 +35,11 @@ func (s *noopService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query 
 func (s *noopService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery[DTO]) (int64, error) {
 	return 0, nil
 }
+
+func (s *noopService[DTO, CreateDTO, UpdateDTO]) Aggregate(
+	c context.Context,
+	filter map[string]interface{},
+	aggregateQuery *types.AggregateQuery,
+) ([]*types.AggregateResponse, error) {
+	return nil, nil
+}
