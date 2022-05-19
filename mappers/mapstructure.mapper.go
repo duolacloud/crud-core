@@ -11,7 +11,13 @@ type MapStructureMapper [DTO any, CreateDTO any, UpdateDTO any, Entity any, Crea
 }
 
 func NewMapStructureMapper[DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity any, UpdateEntity any]() *MapStructureMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity] {
-	return &MapStructureMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]{}
+	m := &MapStructureMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]{	
+	}
+
+	m.fnConvertToDTO = m.ConvertToDTO
+	m.fnConvertToEntity = m.ConvertToEntity 
+
+	return m
 }
 
 func (m *MapStructureMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToDTO(c context.Context, entity *Entity) *DTO {

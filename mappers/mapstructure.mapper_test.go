@@ -27,4 +27,9 @@ func TestMapstructureMapper(t *testing.T) {
 
 	userEntity := mapper.ConvertToEntity(c, userDto)
 	t.Logf("userEntity: %v\n", userEntity)
+
+	userEntities := mapper.ConvertToEntities(c, []*UserDTO{userDto})
+	for _, entity := range userEntities {
+		t.Logf("userEntity: %v\n", entity)
+	}
 }
