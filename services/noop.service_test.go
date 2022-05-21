@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 	"testing"
-	"duolacloud.com/duolacloud/crud-core/types"
+	"github.com/duolacloud/crud-core/types"
 )
 
 type UserDTO2 struct {

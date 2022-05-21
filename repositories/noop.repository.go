@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"context"
-	"duolacloud.com/duolacloud/crud-core/types"
+	"github.com/duolacloud/crud-core/types"
 )
 
 type noopRepository[DTO any, CreateDTO any, UpdateDTO any] struct {

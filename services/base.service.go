@@ -3,8 +3,8 @@ package services
 import (
 	"context"
 
-	"duolacloud.com/duolacloud/crud-core/repositories"
-	"duolacloud.com/duolacloud/crud-core/types"
+	"github.com/duolacloud/crud-core/repositories"
+	"github.com/duolacloud/crud-core/types"
 )
 
 type crudService [DTO any, CreateDTO any, UpdateDTO any] struct {

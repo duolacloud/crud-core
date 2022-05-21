@@ -3,8 +3,8 @@ package repositories
 import (
 	"context"
 
-	"duolacloud.com/duolacloud/crud-core/mappers"
-	"duolacloud.com/duolacloud/crud-core/types"
+	"github.com/duolacloud/crud-core/mappers"
+	"github.com/duolacloud/crud-core/types"
 )
 
 type MapperRepository [DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity any, UpdateEntity any] struct {

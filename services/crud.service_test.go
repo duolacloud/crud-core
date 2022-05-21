@@ -3,9 +3,9 @@ package services
 import (
 	"context"
 	"testing"
-	"duolacloud.com/duolacloud/crud-core/types"
-	"duolacloud.com/duolacloud/crud-core/repositories"
-	"duolacloud.com/duolacloud/crud-core/mappers"
+	"github.com/duolacloud/crud-core/types"
+	"github.com/duolacloud/crud-core/repositories"
+	"github.com/duolacloud/crud-core/mappers"
 )
 
 type UserDTO struct {

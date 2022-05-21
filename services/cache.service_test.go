@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 	"testing"
-	"duolacloud.com/duolacloud/crud-core/cache"
+	"github.com/duolacloud/crud-core/cache"
 )
 
 type UserDTO1 struct {

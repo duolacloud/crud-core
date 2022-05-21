@@ -1,4 +1,4 @@
-module duolacloud.com/duolacloud/crud-core
+module github.com/duolacloud/crud-core
 
 go 1.18
 

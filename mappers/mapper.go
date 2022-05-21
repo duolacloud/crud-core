@@ -2,7 +2,7 @@ package mappers
 
 import (
 	"context"
-	"duolacloud.com/duolacloud/crud-core/types"
+	"github.com/duolacloud/crud-core/types"
 )
 
 type Mapper [DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity any, UpdateEntity any] interface {

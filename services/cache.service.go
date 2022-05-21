@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
-	"duolacloud.com/duolacloud/crud-core/types"
-	"duolacloud.com/duolacloud/crud-core/cache"
+	"github.com/duolacloud/crud-core/types"
+	"github.com/duolacloud/crud-core/cache"
 )
 
 type cacheService [DTO any, CreateDTO any, UpdateDTO any] struct {
