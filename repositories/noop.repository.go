@@ -36,6 +36,11 @@ func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, que
 	return 0, nil
 }
 
+func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error) {
+	return nil, nil
+}
+
+
 func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) Aggregate(
 		c context.Context,
 		filter map[string]interface{},

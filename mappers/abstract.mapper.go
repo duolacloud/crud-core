@@ -6,26 +6,34 @@ import (
 )
 
 type AbstractMapper [DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity any, UpdateEntity any] struct {
-	fnConvertToDTO func(context.Context, *Entity) *DTO
-	fnConvertToEntity func(context.Context, *DTO) *Entity
+	fnConvertToDTO func(context.Context, *Entity) (*DTO, error)
+	fnConvertToEntity func(context.Context, *DTO) (*Entity, error)
 }
 
-func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToDTOs(c context.Context, entities []*Entity) []*DTO {
+func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToDTOs(c context.Context, entities []*Entity) ([]*DTO, error) {
+	var err error
 	dtos := make([]*DTO, len(entities))
 	for i, entity := range entities {
-		dtos[i] = m.fnConvertToDTO(c, entity)
+		dtos[i], err = m.fnConvertToDTO(c, entity)
+		if err != nil {
+			return nil, err
+		}
 	}
-	return dtos
+	return dtos, nil
 }
 
-func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToEntities(c context.Context, dtos []*DTO) []*Entity {
+func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToEntities(c context.Context, dtos []*DTO) ([]*Entity, error) {
+	var err error
 	entities := make([]*Entity, len(dtos))
 	for i, dto := range dtos {
-		entities[i] = m.fnConvertToEntity(c, dto)
+		entities[i], err = m.fnConvertToEntity(c, dto)
+		if err != nil {
+			return nil, err
+		}
 	}
-	return entities
+	return entities, nil
 }
 
-func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertQuery(c context.Context, query *types.PageQuery) *types.PageQuery {
-	return nil
+func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertQuery(c context.Context, query *types.PageQuery) (*types.PageQuery, error) {
+	return query, nil
 }

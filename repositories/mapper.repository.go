@@ -23,14 +23,17 @@ func NewMapperRepository[DTO any, CreateDTO any, UpdateDTO any, Entity any, Crea
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Create(c context.Context, createDTO *CreateDTO, opts ...types.CreateOption) (*DTO, error) {
-	createEntity := r.mapper.ConvertToCreateEntity(c, createDTO)
+	createEntity, err := r.mapper.ConvertToCreateEntity(c, createDTO)
+	if err != nil {
+		return nil, err
+	}
 
 	entity, err := r.repo.Create(c, createEntity)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.mapper.ConvertToDTO(c, entity), nil
+	return r.mapper.ConvertToDTO(c, entity)
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Delete(c context.Context, id types.ID) error {
@@ -38,13 +41,16 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
-	entity := r.mapper.ConvertToUpdateEntity(c, updateDTO)
+	entity, err := r.mapper.ConvertToUpdateEntity(c, updateDTO)
+	if err != nil {
+		return nil, err
+	}
 
 	updatedEntity, err := r.repo.Update(c, id, entity)
 	if err != nil {
 		return nil, err
 	}
-	return r.mapper.ConvertToDTO(c, updatedEntity), nil
+	return r.mapper.ConvertToDTO(c, updatedEntity)
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Get(c context.Context, id types.ID) (*DTO, error) {
@@ -53,24 +59,44 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 		return nil, err
 	}
 
-	return r.mapper.ConvertToDTO(c, entity), nil
+	return r.mapper.ConvertToDTO(c, entity)
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
-	entityQuery := r.mapper.ConvertQuery(c, query)
+	entityQuery, err := r.mapper.ConvertQuery(c, query)
+	if err != nil {
+		return nil, err
+	}
 
 	entities, err := r.repo.Query(c, entityQuery)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.mapper.ConvertToDTOs(c, entities), nil
+	return r.mapper.ConvertToDTOs(c, entities)
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Count(c context.Context, query *types.PageQuery) (int64, error) {
-	entityQuery := r.mapper.ConvertQuery(c, query)
+	entityQuery, err := r.mapper.ConvertQuery(c, query)
+	if err != nil {
+		return 0, err
+	}
 
 	return r.repo.Count(c, entityQuery)
+}
+
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error) {
+	entityQuery, err := r.mapper.ConvertQuery(c, &types.PageQuery{ Filter: filter })
+	if err != nil {
+		return nil, err
+	}
+
+	entity, err := r.repo.QueryOne(c, entityQuery.Filter)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.mapper.ConvertToDTO(c, entity)
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Aggregate(
@@ -87,5 +113,10 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 		return nil, nil, err
 	}
 
-	return r.mapper.ConvertToDTOs(c, entities), extra, nil
+	dtos, err := r.mapper.ConvertToDTOs(c, entities)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return dtos, extra, nil
 }

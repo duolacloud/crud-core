@@ -22,11 +22,17 @@ func TestNoopService(t *testing.T) {
 	t.Logf("haha: %v", u)
 
 	us, err := s.Query(context.TODO(), &types.PageQuery{
-
 	})
 
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Logf("haha: %v", us)
+
+	u1, err := s.QueryOne(context.TODO(), map[string]interface{}{
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("query_one: %v\n", u1)
 }

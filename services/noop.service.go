@@ -32,6 +32,10 @@ func (s *noopService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query 
 	return nil, nil
 }
 
+func (s *noopService[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error) {
+	return nil, nil
+}
+
 func (s *noopService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery) (int64, error) {
 	return 0, nil
 }

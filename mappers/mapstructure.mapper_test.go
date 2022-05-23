@@ -25,10 +25,16 @@ func TestMapstructureMapper(t *testing.T) {
 		Name: "张三",
 	}
 
-	userEntity := mapper.ConvertToEntity(c, userDto)
+	userEntity, err := mapper.ConvertToEntity(c, userDto)
+	if err != nil {
+		t.Fatal(err)
+	}
 	t.Logf("userEntity: %v\n", userEntity)
 
-	userEntities := mapper.ConvertToEntities(c, []*UserDTO{userDto})
+	userEntities, err := mapper.ConvertToEntities(c, []*UserDTO{userDto})
+	if err != nil {
+		t.Fatal(err)
+	}
 	for _, entity := range userEntities {
 		t.Logf("userEntity: %v\n", entity)
 	}

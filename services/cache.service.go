@@ -45,6 +45,10 @@ func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query
 	return s.service.Count(c, query)
 }
 
+func (s *cacheService[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error) {
+	return s.service.QueryOne(c, filter)
+}
+
 func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Aggregate(
 	c context.Context,
 	filter map[string]interface{},
