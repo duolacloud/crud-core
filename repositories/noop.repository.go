@@ -25,7 +25,7 @@ func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id
 }
 
 func (r *noopRepository[DTO, CreateDTO, UpdateDTO])	Get(c context.Context, id types.ID) (*DTO, error) {
-	return nil, nil
+	return nil, types.ErrNotFound
 }
 
 func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
