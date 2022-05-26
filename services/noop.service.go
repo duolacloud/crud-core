@@ -32,7 +32,7 @@ func (s *noopService[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query 
 	return nil, nil
 }
 
-func (s *noopService[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error) {
+func (s *noopService[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]any) (*DTO, error) {
 	return nil, nil
 }
 
@@ -42,7 +42,7 @@ func (s *noopService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query 
 
 func (s *noopService[DTO, CreateDTO, UpdateDTO]) Aggregate(
 	c context.Context,
-	filter map[string]interface{},
+	filter map[string]any,
 	aggregateQuery *types.AggregateQuery,
 ) ([]*types.AggregateResponse, error) {
 	return nil, nil

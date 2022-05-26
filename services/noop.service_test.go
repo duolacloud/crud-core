@@ -29,7 +29,7 @@ func TestNoopService(t *testing.T) {
 	}
 	t.Logf("haha: %v", us)
 
-	u1, err := s.QueryOne(context.TODO(), map[string]interface{}{
+	u1, err := s.QueryOne(context.TODO(), map[string]any{
 	})
 	if err != nil {
 		t.Fatal(err)

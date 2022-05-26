@@ -9,10 +9,10 @@ func NewNoopCache() Cache {
 	return &noopCache{}
 }
 
-func (n *noopCache) Get(c context.Context, key string, opts ...GetOption) (interface{}, error) {
+func (n *noopCache) Get(c context.Context, key string, opts ...GetOption) (any, error) {
 	return nil, nil
 }
 
-func (n *noopCache) Set(c context.Context, key string, value interface{}, opts ...SetOption) error {
+func (n *noopCache) Set(c context.Context, key string, value any, opts ...SetOption) error {
 	return nil
 }

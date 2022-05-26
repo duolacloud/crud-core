@@ -85,7 +85,7 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 	return r.repo.Count(c, entityQuery)
 }
 
-func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error) {
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) QueryOne(c context.Context, filter map[string]any) (*DTO, error) {
 	entityQuery, err := r.mapper.ConvertQuery(c, &types.PageQuery{ Filter: filter })
 	if err != nil {
 		return nil, err
@@ -101,7 +101,7 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Aggregate(
 	c context.Context,
-	filter map[string]interface{},
+	filter map[string]any,
 	aggregateQuery *types.AggregateQuery,
 ) ([]*types.AggregateResponse, error) {
 	return r.repo.Aggregate(c, filter, aggregateQuery)

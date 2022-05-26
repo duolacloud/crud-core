@@ -17,12 +17,12 @@ const (
 )
 
 type CursorQuery struct {
-	Filter    map[string]interface{} `json:"filter"`    // 筛选条件
-	Cursor    string                 `json:"cursor"`    // 游标值
-	Direction CursorDirection        `json:"direction"` // 查询方向 Before：游标前 After：游标后
-	Limit     int64                  `json:"limit"`
-	Fields    []string               `json:"fields"`
-	Sort      []string               `json:"sort"`
+	Filter    map[string]any  `json:"filter"`    // 筛选条件
+	Cursor    string          `json:"cursor"`    // 游标值
+	Direction CursorDirection `json:"direction"` // 查询方向 Before：游标前 After：游标后
+	Limit     int64           `json:"limit"`
+	Fields    []string        `json:"fields"`
+	Sort      []string        `json:"sort"`
 }
 
 type CursorExtra struct {
@@ -33,8 +33,8 @@ type CursorExtra struct {
 }
 
 type Cursor struct {
-	// ID    interface{} `msgpack:"i"`
-	Value []interface{} `msgpack:"v"`
+	// ID    any `msgpack:"i"`
+	Value []any `msgpack:"v"`
 }
 
 func (c *Cursor) Unmarshal(s string) error {

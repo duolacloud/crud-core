@@ -12,10 +12,10 @@ type CrudRepository[DTO any, CreateDTO any, UpdateDTO any] interface {
 	Get(c context.Context, id types.ID) (*DTO, error)
 	Query(c context.Context, query *types.PageQuery) ([]*DTO, error)
 	Count(c context.Context, query *types.PageQuery) (int64, error)
-	QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error)
+	QueryOne(c context.Context, filter map[string]any) (*DTO, error)
 	Aggregate(
 		c context.Context,
-		filter map[string]interface{},
+		filter map[string]any,
 		aggregateQuery *types.AggregateQuery,
 	) ([]*types.AggregateResponse, error)
 

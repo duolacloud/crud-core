@@ -82,7 +82,7 @@ func extract(qs *string, re regexp.Regexp) string {
 }
 
 func parseBracketParams(qs string, o *PageQuery) error {
-	o.Filter = map[string]interface{}{}
+	o.Filter = map[string]any{}
 	o.Page = map[string]int{}
 
 	terms := bracketRE.FindAllStringSubmatch(qs, -1)
@@ -97,10 +97,10 @@ func parseBracketParams(qs string, o *PageQuery) error {
 		switch strings.ToLower(term[1]) {
 		case "filter":
 			if o.Filter == nil {
-				o.Filter = map[string]interface{}{}
+				o.Filter = map[string]any{}
 			}
 
-			filter := make(map[string]interface{})
+			filter := make(map[string]any)
 			err := json.Unmarshal([]byte(values[i][1]), &filter)
 			if err != nil {
 				fmt.Printf("Unmarshal with error: %+v\n", err)

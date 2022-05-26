@@ -1,50 +1,50 @@
 package types
 
-type NumberAggregate = map[string]interface{}
+type NumberAggregate = map[string]any
 
-type TypeAggregate = map[string]interface{}
+type TypeAggregate = map[string]any
 
 type AggregateResponse struct {
-	Count   NumberAggregate        `json:"count,omitempty"`
-	Sum     NumberAggregate        `json:"sum,omitempty"`
-	Avg     NumberAggregate        `json:"avg,omitempty"`
-	Max     TypeAggregate          `json:"max,omitempty"`
-	Min     TypeAggregate          `json:"min,omitempty"`
-	GroupBy map[string]interface{} `json:"group_by,omitempty"`
+	Count   NumberAggregate `json:"count,omitempty"`
+	Sum     NumberAggregate `json:"sum,omitempty"`
+	Avg     NumberAggregate `json:"avg,omitempty"`
+	Max     TypeAggregate   `json:"max,omitempty"`
+	Min     TypeAggregate   `json:"min,omitempty"`
+	GroupBy map[string]any  `json:"group_by,omitempty"`
 }
 
-func (r *AggregateResponse) Append(aggFunc string, field string, value interface{}) {
-	var arr map[string]interface{}
+func (r *AggregateResponse) Append(aggFunc string, field string, value any) {
+	var arr map[string]any
 
 	switch aggFunc {
 	case "count":
 		if r.Count == nil {
-			r.Count = map[string]interface{}{}
+			r.Count = map[string]any{}
 		}
 		arr = r.Count
 	case "sum":
 		if r.Sum == nil {
-			r.Sum = map[string]interface{}{}
+			r.Sum = map[string]any{}
 		}
 		arr = r.Sum
 	case "avg":
 		if r.Avg == nil {
-			r.Avg = map[string]interface{}{}
+			r.Avg = map[string]any{}
 		}
 		arr = r.Avg
 	case "max":
 		if r.Max == nil {
-			r.Max = map[string]interface{}{}
+			r.Max = map[string]any{}
 		}
 		arr = r.Max
 	case "min":
 		if r.Min == nil {
-			r.Min = map[string]interface{}{}
+			r.Min = map[string]any{}
 		}
 		arr = r.Min
 	case "group_by":
 		if r.GroupBy == nil {
-			r.GroupBy = map[string]interface{}{}
+			r.GroupBy = map[string]any{}
 		}
 		arr = r.GroupBy
 	}
@@ -55,7 +55,7 @@ func (r *AggregateResponse) Append(aggFunc string, field string, value interface
 func (r *AggregateResponse) Merge(o *AggregateResponse) {
 	if o.Count != nil {
 		if r.Count == nil {
-			r.Count = map[string]interface{}{}
+			r.Count = map[string]any{}
 		}
 
 		for k, v := range o.Count {
@@ -65,7 +65,7 @@ func (r *AggregateResponse) Merge(o *AggregateResponse) {
 
 	if o.Sum != nil {
 		if r.Sum == nil {
-			r.Sum = map[string]interface{}{}
+			r.Sum = map[string]any{}
 		}
 
 		for k, v := range o.Sum {
@@ -74,7 +74,7 @@ func (r *AggregateResponse) Merge(o *AggregateResponse) {
 	}
 	if o.Avg != nil {
 		if r.Avg == nil {
-			r.Avg = map[string]interface{}{}
+			r.Avg = map[string]any{}
 		}
 
 		for k, v := range o.Avg {
@@ -84,7 +84,7 @@ func (r *AggregateResponse) Merge(o *AggregateResponse) {
 
 	if o.Max != nil {
 		if r.Max == nil {
-			r.Max = map[string]interface{}{}
+			r.Max = map[string]any{}
 		}
 
 		for k, v := range o.Max {
@@ -94,7 +94,7 @@ func (r *AggregateResponse) Merge(o *AggregateResponse) {
 
 	if o.Min != nil {
 		if r.Min == nil {
-			r.Min = map[string]interface{}{}
+			r.Min = map[string]any{}
 		}
 
 		for k, v := range o.Min {
@@ -104,7 +104,7 @@ func (r *AggregateResponse) Merge(o *AggregateResponse) {
 
 	if o.GroupBy != nil {
 		if r.GroupBy == nil {
-			r.GroupBy = map[string]interface{}{}
+			r.GroupBy = map[string]any{}
 		}
 
 		for k, v := range o.GroupBy {

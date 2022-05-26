@@ -12,11 +12,11 @@ type CrudService [DTO any, CreateDTO any, UpdateDTO any] interface {
 	Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error)
 	Get(c context.Context, id types.ID) (*DTO, error)
 	Query(c context.Context, query *types.PageQuery) ([]*DTO, error)
-	QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error)
+	QueryOne(c context.Context, filter map[string]any) (*DTO, error)
 	Count(c context.Context, query *types.PageQuery) (int64, error)
 	Aggregate(
 		c context.Context,
-		filter map[string]interface{},
+		filter map[string]any,
 		aggregateQuery *types.AggregateQuery,
 	) ([]*types.AggregateResponse, error)
 }

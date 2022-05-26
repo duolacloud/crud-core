@@ -11,10 +11,10 @@ type IPaginationStrategy interface {
 
 type PageQuery struct {
 	ps     IPaginationStrategy
-	Fields []string               `json:"fields"`
-	Filter map[string]interface{} `json:"filter"`
-	Page   map[string]int         `json:"page"`
-	Sort   []string               `json:"sort"`
+	Fields []string       `json:"fields,omitempty"`
+	Filter map[string]any `json:"filter,omitempty"`
+	Page   map[string]int `json:"page,omitempty"`
+	Sort   []string       `json:"sort,omitempty"`
 }
 
 // SetPaginationStrategy can be used to specify custom pagination

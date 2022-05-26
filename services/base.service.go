@@ -43,13 +43,13 @@ func (s *crudService[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query 
 	return s.repo.Count(c, query)
 }
 
-func (s *crudService[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]interface{}) (*DTO, error) {
+func (s *crudService[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]any) (*DTO, error) {
 	return s.repo.QueryOne(c, filter)
 }
 
 func (s *crudService[DTO, CreateDTO, UpdateDTO]) Aggregate(
 	c context.Context,
-	filter map[string]interface{},
+	filter map[string]any,
 	aggregateQuery *types.AggregateQuery,
 ) ([]*types.AggregateResponse, error) {
 	return s.repo.Aggregate(c, filter, aggregateQuery)
