@@ -1,5 +1,7 @@
 package types
 
+import "strings"
+
 type NumberAggregate = map[string]any
 
 type TypeAggregate = map[string]any
@@ -15,6 +17,8 @@ type AggregateResponse struct {
 
 func (r *AggregateResponse) Append(aggFunc string, field string, value any) {
 	var arr map[string]any
+
+	aggFunc = strings.ToLower(aggFunc)
 
 	switch aggFunc {
 	case "count":
