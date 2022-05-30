@@ -16,7 +16,7 @@ func (s *noopService[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, creat
 	return nil, nil
 }
 
-func (s *noopService[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error) {
+func (s *noopService[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateManyOption) ([]*DTO, error) {
 	return nil, nil
 }
 

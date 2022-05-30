@@ -16,7 +16,7 @@ func(r *noopRepository[DTO, CreateDTO, UpdateDTO])	Create(c context.Context, cre
 	return nil, nil
 }
 
-func(r *noopRepository[DTO, CreateDTO, UpdateDTO])	CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error) {
+func(r *noopRepository[DTO, CreateDTO, UpdateDTO])	CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateManyOption) ([]*DTO, error) {
 	return nil, nil
 }
 

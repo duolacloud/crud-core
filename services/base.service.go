@@ -23,7 +23,7 @@ func (s *crudService[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, creat
 	return s.repo.Create(c, createDTO, opts...)
 }
 
-func (s *crudService[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error) {
+func (s *crudService[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateManyOption) ([]*DTO, error) {
 	return s.repo.CreateMany(c, items, opts...)
 }
 
