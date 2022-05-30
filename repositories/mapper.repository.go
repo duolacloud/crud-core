@@ -36,6 +36,21 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 	return r.mapper.ConvertToDTO(c, entity)
 }
 
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error) {
+	converted, err := r.mapper.ConvertToCreateEntities(c, items)
+	if err != nil {
+		return nil, err
+	}
+
+	entities, err := r.repo.CreateMany(c, converted)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.mapper.ConvertToDTOs(c, entities)
+}
+
+
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Delete(c context.Context, id types.ID) error {
 	return r.repo.Delete(c, id)
 }

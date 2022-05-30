@@ -15,7 +15,8 @@ func NewMapStructureMapper[DTO any, CreateDTO any, UpdateDTO any, Entity any, Cr
 	}
 
 	m.fnConvertToDTO = m.ConvertToDTO
-	m.fnConvertToEntity = m.ConvertToEntity 
+	m.fnConvertToEntity = m.ConvertToEntity
+	m.fnConvertToCreateEntity = m.ConvertToCreateEntity
 
 	return m
 }

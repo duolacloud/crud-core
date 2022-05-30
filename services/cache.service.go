@@ -25,6 +25,10 @@ func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, crea
 	return s.service.Create(c, createDTO, opts...)
 }
 
+func (s *cacheService[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error) {
+	return s.service.CreateMany(c, items, opts...)
+}
+
 func (s *cacheService[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
 	return s.service.Delete(c, id)
 }

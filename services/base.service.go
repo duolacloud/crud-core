@@ -23,6 +23,10 @@ func (s *crudService[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, creat
 	return s.repo.Create(c, createDTO, opts...)
 }
 
+func (s *crudService[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error) {
+	return s.repo.CreateMany(c, items, opts...)
+}
+
 func (s *crudService[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
 	return s.repo.Delete(c, id)
 }

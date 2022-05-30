@@ -8,6 +8,7 @@ import (
 
 type CrudService [DTO any, CreateDTO any, UpdateDTO any] interface {
 	Create(c context.Context, dto *CreateDTO, opts ...types.CreateOption) (*DTO, error)
+	CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error)
 	Delete(c context.Context, id types.ID) error
 	Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error)
 	Get(c context.Context, id types.ID) (*DTO, error)

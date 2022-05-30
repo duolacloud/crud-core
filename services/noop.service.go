@@ -16,6 +16,10 @@ func (s *noopService[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, creat
 	return nil, nil
 }
 
+func (s *noopService[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateOption) ([]*DTO, error) {
+	return nil, nil
+}
+
 func (s *noopService[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
 	return nil
 }

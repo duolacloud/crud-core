@@ -8,6 +8,7 @@ import (
 type AbstractMapper [DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity any, UpdateEntity any] struct {
 	fnConvertToDTO func(context.Context, *Entity) (*DTO, error)
 	fnConvertToEntity func(context.Context, *DTO) (*Entity, error)
+	fnConvertToCreateEntity func(context.Context, *CreateDTO) (*CreateEntity, error)
 }
 
 func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToDTOs(c context.Context, entities []*Entity) ([]*DTO, error) {
@@ -27,6 +28,18 @@ func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateE
 	entities := make([]*Entity, len(dtos))
 	for i, dto := range dtos {
 		entities[i], err = m.fnConvertToEntity(c, dto)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return entities, nil
+}
+
+func (m *AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToCreateEntities(c context.Context, items []*CreateDTO) ([]*CreateEntity, error) {
+	var err error
+	entities := make([]*CreateEntity, len(items))
+	for i, dto := range items {
+		entities[i], err = m.fnConvertToCreateEntity(c, dto)
 		if err != nil {
 			return nil, err
 		}
