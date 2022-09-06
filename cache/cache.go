@@ -2,6 +2,11 @@ package cache
 
 import (
 	"context"
+	"errors"
+)
+
+var (
+	ErrNotExsit = errors.New("cache not exist.")
 )
 
 type Cache interface {
