@@ -20,3 +20,6 @@ func WithExpiration(exipration time.Duration) SetOption {
 		o.Exipration = exipration
 	}
 }
+
+type DeleteOptions struct{}
+type DeleteOption func(*DeleteOptions)

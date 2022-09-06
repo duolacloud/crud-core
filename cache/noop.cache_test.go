@@ -8,6 +8,7 @@ import (
 func TestNoopCache(t *testing.T) {
 	c := NewNoopCache()
 	c.Set(context.TODO(), "k", "v")
-
-	c.Get(context.TODO(), "k")
+	v := new(string)
+	c.Get(context.TODO(), "k", v)
+	c.Delete(context.TODO(), "k")
 }
