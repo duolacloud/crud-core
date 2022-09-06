@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -77,7 +78,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id t
 	dto := new(DTO)
 
 	err := r.cache.Get(c, cacheKey, dto)
-	if err != nil && err != core_cache.ErrNotExsit {
+	if err != nil && !errors.Is(err, core_cache.ErrNotExsit) {
 		// 缓存查询错误
 		return nil, err
 	}
@@ -90,7 +91,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id t
 	defer r.mutex.Unlock()
 
 	err = r.cache.Get(c, cacheKey, dto)
-	if err != nil && err != core_cache.ErrNotExsit {
+	if err != nil && !errors.Is(err, core_cache.ErrNotExsit) {
 		// 缓存查询错误
 		return nil, err
 	}
@@ -103,11 +104,13 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id t
 	if err != nil {
 		return nil, err
 	}
-	opts := make([]core_cache.SetOption, 0)
-	if r.options.Expiration.Seconds() > 0 {
-		opts = append(opts, core_cache.WithExpiration(r.options.Expiration))
+	if dto != nil {
+		opts := make([]core_cache.SetOption, 0)
+		if r.options.Expiration.Seconds() > 0 {
+			opts = append(opts, core_cache.WithExpiration(r.options.Expiration))
+		}
+		_ = r.cache.Set(c, cacheKey, dto, opts...)
 	}
-	_ = r.cache.Set(c, cacheKey, dto, opts...)
 	return dto, nil
 }
 
