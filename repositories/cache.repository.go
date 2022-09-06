@@ -4,36 +4,56 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	core_cache "github.com/duolacloud/crud-core/cache"
 	"github.com/duolacloud/crud-core/types"
 )
 
-type cacheRepository[DTO any, CreateDTO any, UpdateDTO any] struct {
+type CacheRepositoryOptions struct {
+	Expiration time.Duration
+}
+
+type CacheRepositoryOption func(*CacheRepositoryOptions)
+
+func WithExpiration(expiration time.Duration) CacheRepositoryOption {
+	return func(cro *CacheRepositoryOptions) {
+		cro.Expiration = expiration
+	}
+}
+
+type CacheRepository[DTO any, CreateDTO any, UpdateDTO any] struct {
 	CrudRepository[DTO, CreateDTO, UpdateDTO]
-	cache core_cache.Cache
-	mutex sync.Mutex
+	cache   core_cache.Cache
+	mutex   sync.Mutex
+	options *CacheRepositoryOptions
 }
 
 func NewCacheRepository[DTO any, CreateDTO any, UpdateDTO any](
 	repository CrudRepository[DTO, CreateDTO, UpdateDTO],
 	cache core_cache.Cache,
+	opts ...CacheRepositoryOption,
 ) CrudRepository[DTO, CreateDTO, UpdateDTO] {
-	return &cacheRepository[DTO, CreateDTO, UpdateDTO]{
+	repo := &CacheRepository[DTO, CreateDTO, UpdateDTO]{
 		CrudRepository: repository,
 		cache:          cache,
+		options:        &CacheRepositoryOptions{},
 	}
+	for _, opt := range opts {
+		opt(repo.options)
+	}
+	return repo
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, createDTO *CreateDTO, opts ...types.CreateOption) (*DTO, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, createDTO *CreateDTO, opts ...types.CreateOption) (*DTO, error) {
 	return r.CrudRepository.Create(c, createDTO, opts...)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateManyOption) ([]*DTO, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateManyOption) ([]*DTO, error) {
 	return r.CrudRepository.CreateMany(c, items, opts...)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 	if err := r.cache.Delete(c, fmt.Sprintf("%v", id)); err != nil {
@@ -42,7 +62,7 @@ func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, i
 	return r.CrudRepository.Delete(c, id)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 	if err := r.cache.Delete(c, fmt.Sprintf("%v", id)); err != nil {
@@ -51,7 +71,7 @@ func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, i
 	return r.CrudRepository.Update(c, id, updateDTO, opts...)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types.ID) (*DTO, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types.ID) (*DTO, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 	cacheKey := fmt.Sprintf("%v", id)
@@ -70,23 +90,27 @@ func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id t
 	if err != nil {
 		return nil, err
 	}
-	_ = r.cache.Set(c, cacheKey, dto)
+	opts := make([]core_cache.SetOption, 0)
+	if r.options.Expiration.Seconds() > 0 {
+		opts = append(opts, core_cache.WithExpiration(r.options.Expiration))
+	}
+	_ = r.cache.Set(c, cacheKey, dto, opts...)
 	return dto, nil
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Query(c context.Context, query *types.PageQuery) ([]*DTO, error) {
 	return r.CrudRepository.Query(c, query)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery) (int64, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Count(c context.Context, query *types.PageQuery) (int64, error) {
 	return r.CrudRepository.Count(c, query)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]any) (*DTO, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) QueryOne(c context.Context, filter map[string]any) (*DTO, error) {
 	return r.CrudRepository.QueryOne(c, filter)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Aggregate(
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Aggregate(
 	c context.Context,
 	filter map[string]any,
 	aggregateQuery *types.AggregateQuery,
@@ -94,6 +118,6 @@ func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) Aggregate(
 	return r.CrudRepository.Aggregate(c, filter, aggregateQuery)
 }
 
-func (r *cacheRepository[DTO, CreateDTO, UpdateDTO]) CursorQuery(c context.Context, query *types.CursorQuery) ([]*DTO, *types.CursorExtra, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) CursorQuery(c context.Context, query *types.CursorQuery) ([]*DTO, *types.CursorExtra, error) {
 	return r.CrudRepository.CursorQuery(c, query)
 }
