@@ -72,11 +72,24 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, i
 }
 
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types.ID) (*DTO, error) {
-	r.mutex.Lock()
-	defer r.mutex.Unlock()
+	// 查缓存用双重检查锁
 	cacheKey := fmt.Sprintf("%v", id)
 	dto := new(DTO)
+
 	err := r.cache.Get(c, cacheKey, dto)
+	if err != nil && err != core_cache.ErrNotExsit {
+		// 缓存查询错误
+		return nil, err
+	}
+	if err == nil {
+		// 命中缓存，直接返回
+		return dto, nil
+	}
+
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+
+	err = r.cache.Get(c, cacheKey, dto)
 	if err != nil && err != core_cache.ErrNotExsit {
 		// 缓存查询错误
 		return nil, err
