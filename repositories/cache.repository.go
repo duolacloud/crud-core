@@ -3,7 +3,6 @@ package repositories
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
 	"time"
 
@@ -57,7 +56,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Contex
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
-	if err := r.cache.Delete(c, fmt.Sprintf("%v", id)); err != nil {
+	if err := r.cache.Delete(c, types.FormatID(id)); err != nil {
 		return err
 	}
 	return r.CrudRepository.Delete(c, id)
@@ -66,7 +65,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, i
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
-	if err := r.cache.Delete(c, fmt.Sprintf("%v", id)); err != nil {
+	if err := r.cache.Delete(c, types.FormatID(id)); err != nil {
 		return nil, err
 	}
 	return r.CrudRepository.Update(c, id, updateDTO, opts...)
@@ -74,7 +73,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, i
 
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types.ID) (*DTO, error) {
 	// 查缓存用双重检查锁
-	cacheKey := fmt.Sprintf("%v", id)
+	cacheKey := types.FormatID(id)
 	dto := new(DTO)
 
 	err := r.cache.Get(c, cacheKey, dto)
