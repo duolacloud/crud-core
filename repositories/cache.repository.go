@@ -77,7 +77,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id t
 	dto := new(DTO)
 
 	err := r.cache.Get(c, cacheKey, dto)
-	if err != nil && !errors.Is(err, core_cache.ErrNotExsit) {
+	if err != nil && !errors.Is(err, types.ErrNotFound) {
 		// 缓存查询错误
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id t
 	defer r.mutex.Unlock()
 
 	err = r.cache.Get(c, cacheKey, dto)
-	if err != nil && !errors.Is(err, core_cache.ErrNotExsit) {
+	if err != nil && !errors.Is(err, types.ErrNotFound) {
 		// 缓存查询错误
 		return nil, err
 	}
