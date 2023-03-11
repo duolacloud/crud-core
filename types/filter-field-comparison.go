@@ -14,6 +14,6 @@ const (
 
 	FilterComparisonOperatorsIs    FilterComparisonOperators = "is"
 	FilterComparisonOperatorsIsNot FilterComparisonOperators = "isnot"
-	FilterComparisonOperatorsLike  FilterComparisonOperators = "Like"
+	FilterComparisonOperatorsLike  FilterComparisonOperators = "like"
 	FilterComparisonOperatorsIlike FilterComparisonOperators = "iLike"
 )
