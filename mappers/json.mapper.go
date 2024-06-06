@@ -10,7 +10,7 @@ type JSONMapper [DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity
 	AbstractMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]
 }
 
-func NewJSONMapper[DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity any, UpdateEntity any]() *MapStructureMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity] {
+func NewJSONMapper[DTO any, CreateDTO any, UpdateDTO any, Entity any, CreateEntity any, UpdateEntity any]() *JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity] {
 	m := &JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]{	
 	}
 
