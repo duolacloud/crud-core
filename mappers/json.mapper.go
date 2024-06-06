@@ -28,7 +28,7 @@ func (m *JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntit
 	}
 
 	var dto *DTO
-	err := json.Unmarshal(bytes, &dto)
+	err = json.Unmarshal(bytes, &dto)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (m *JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntit
 	}
 
 	var entity *Entity
-	err := json.Unmarshal(bytes, &entity)
+	err = json.Unmarshal(bytes, &entity)
 	if err != nil {
 		return nil, err
 	}
@@ -52,13 +52,13 @@ func (m *JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntit
 }
 
 func (m *JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToCreateEntity(c context.Context, createDTO *CreateDTO) (*CreateEntity, error) {
-	bytes, err := json.Marshal(dto)
+	bytes, err := json.Marshal(createDTO)
 	if err != nil {
 		return nil, nil
 	}
 
 	var createEntity *CreateEntity
-	err := json.Unmarshal(bytes, &createEntity)
+	err = json.Unmarshal(bytes, &createEntity)
 	if err != nil {
 		return nil, err
 	}
@@ -67,13 +67,13 @@ func (m *JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntit
 }
 
 func (m *JSONMapper[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) ConvertToUpdateEntity(c context.Context, updateDTO *UpdateDTO) (*UpdateEntity, error) {
-	bytes, err := json.Marshal(dto)
+	bytes, err := json.Marshal(updateDTO)
         if err != nil {
                 return nil, nil
         }
 
 	var updateEntity *UpdateEntity
-	err := json.Unmarshal(bytes, &updateEntity)
+	err = json.Unmarshal(bytes, &updateEntity)
 	if err != nil {
 		return nil, err
 	}
