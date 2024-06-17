@@ -1,6 +1,7 @@
 package datasource
 
 import(
+	"fmt"
 	"context"
 )
 
@@ -10,7 +11,7 @@ type DBGetter[DB any] interface {
 
 type multiTenantDataSource[DB any] struct {
 	tenantKey string
-	dbGetter DBGetter
+	dbGetter DBGetter[DB]
 }
 
 func NewMultiTenantDataSource[DB any](tenantKey string, dbGetter DBGetter) DataSource[DB] {
@@ -23,7 +24,7 @@ func NewMultiTenantDataSource[DB any](tenantKey string, dbGetter DBGetter) DataS
 func (s *multiTenantDataSource[DB]) GetDB(ctx context.Context) (*DB, error) {
 	tenantId, ok := ctx.Value(s.tenantKey).(string)
 	if !ok {
-		return nil, fmt.Errorf("invalid value, value for tenant key not string", key)
+		return nil, fmt.Errorf("invalid value, value for tenant key not string", s.tenantKey)
 	}
 
 	db, err := s.dbGetter.Get(ctx, tenantId)
