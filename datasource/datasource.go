@@ -12,7 +12,7 @@ type dataSource[DB any] struct {
 	db *DB
 }
 
-type NewSingleDatasource[DB any](db DB) DataSource[DB] {
+func NewSingleDatasource[DB any](db DB) DataSource[DB] {
 	return &dataSource[DB]{
 		db,
 	}
