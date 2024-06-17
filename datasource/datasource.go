@@ -4,20 +4,20 @@ import(
 	"context"
 )
 
-type DataSource interface {
-	GetDB(ctx ctx.Context) (any, error)
+type DataSource[DB any] interface {
+	GetDB(ctx ctx.Context) (*DB, error)
 }
 
-type dataSource struct {
-	db any
+type dataSource[DB any] struct {
+	db *DB
 }
 
-type NewSingleDatasource(db any) DataSource {
-	return &dataSource{
+type NewSingleDatasource[DB any](db DB) DataSource[DB] {
+	return &dataSource[DB]{
 		db,
 	}
 }
 
-func (s *dataSource) GetDB(ctx context.Context) (any, error) {
+func (s *dataSource[DB]) GetDB(ctx context.Context) (*DB, error) {
 	return s.db, nil
 }

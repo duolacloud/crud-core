@@ -1,18 +1,30 @@
 package datasource
 
-type multiTenantDataSource struct {
-	dbRouter,
+import(
+	"context"
+)
+
+type DBGetter[DB any] interface {
+	Get(ctx context.Context, tenantKey string) (*DB, error)
 }
 
-func NewMultiTenantDataSource(key string) DataSource {
-	return &multiTenantDataSource{
-		dbRouter,
+type multiTenantDataSource[DB any] struct {
+	tenantKey string
+	idbGetter DBGetter
+}
+
+func NewMultiTenantDataSource[DB any](tenantKey string, dbGetter) DataSource[DB] {
+	return &multiTenantDataSource[DB]{
+		tenantKey,
+		dbGetter,
 	}
 }
 
-func (s *multiTenantDataSource) GetDB(ctx context.Context) (any, error) {
-	db := ctx.Value(s.key)
+func (s *multiTenantDataSource[DB]) GetDB(ctx context.Context) (*DB, error) {
+	dbKey := ctx.Value(s.key)
 	if db == nil {
 		return nil, fmt.Errorf("db not found for %v", key)
 	}
+
+	return s.dbGetter.Get(ctx, tenantKey)
 }
