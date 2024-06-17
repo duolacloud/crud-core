@@ -36,7 +36,7 @@ type DeleteOption func(*DeleteOptions)
 
 func WithDeleteMode(v DeleteMode) DeleteOption {
 	return func(o *DeleteOptions) {
-		o.DeleteMode = o
+		o.DeleteMode = v
 	}
 }
 
