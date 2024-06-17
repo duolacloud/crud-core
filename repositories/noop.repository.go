@@ -20,7 +20,7 @@ func(r *noopRepository[DTO, CreateDTO, UpdateDTO])	CreateMany(c context.Context,
 	return nil, nil
 }
 
-func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
+func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID, opts ...types.DeleteOption) error {
 	return nil
 }
 
@@ -28,7 +28,7 @@ func (r *noopRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id
 	return nil, nil
 }
 
-func (r *noopRepository[DTO, CreateDTO, UpdateDTO])	Get(c context.Context, id types.ID) (*DTO, error) {
+func (r *noopRepository[DTO, CreateDTO, UpdateDTO])	Get(c context.Context, id types.ID, opts ...types.GetOption) (*DTO, error) {
 	return nil, types.ErrNotFound
 }
 

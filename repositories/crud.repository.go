@@ -8,9 +8,9 @@ import (
 type CrudRepository[DTO any, CreateDTO any, UpdateDTO any] interface {
 	Create(c context.Context, createDTO *CreateDTO, opts ...types.CreateOption) (*DTO, error)
 	CreateMany(c context.Context, items []*CreateDTO, opts ...types.CreateManyOption) ([]*DTO, error)
-	Delete(c context.Context, id types.ID) error
+	Delete(c context.Context, id types.ID, opts ...types.DeleteOption) error
 	Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error)
-	Get(c context.Context, id types.ID) (*DTO, error)
+	Get(c context.Context, id types.ID, opts ...types.GetOption) (*DTO, error)
 	Query(c context.Context, query *types.PageQuery) ([]*DTO, error)
 	Count(c context.Context, query *types.PageQuery) (int64, error)
 	QueryOne(c context.Context, filter map[string]any) (*DTO, error)

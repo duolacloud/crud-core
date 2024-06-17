@@ -28,7 +28,7 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 		return nil, err
 	}
 
-	entity, err := r.repo.Create(c, createEntity)
+	entity, err := r.repo.Create(c, createEntity, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 		return nil, err
 	}
 
-	entities, err := r.repo.CreateMany(c, converted)
+	entities, err := r.repo.CreateMany(c, converted, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +51,8 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 }
 
 
-func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Delete(c context.Context, id types.ID) error {
-	return r.repo.Delete(c, id)
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Delete(c context.Context, id types.ID, opts ...types.DeleteOption) error {
+	return r.repo.Delete(c, id, opts...)
 }
 
 func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
@@ -61,15 +61,15 @@ func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, Updat
 		return nil, err
 	}
 
-	updatedEntity, err := r.repo.Update(c, id, entity)
+	updatedEntity, err := r.repo.Update(c, id, entity, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return r.mapper.ConvertToDTO(c, updatedEntity)
 }
 
-func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Get(c context.Context, id types.ID) (*DTO, error) {
-	entity, err := r.repo.Get(c, id)
+func (r *MapperRepository[DTO, CreateDTO, UpdateDTO, Entity, CreateEntity, UpdateEntity]) Get(c context.Context, id types.ID, opts ...types.GetOption) (*DTO, error) {
+	entity, err := r.repo.Get(c, id, opts...)
 	if err != nil {
 		return nil, err
 	}

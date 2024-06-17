@@ -53,13 +53,18 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Contex
 	return r.CrudRepository.CreateMany(c, items, opts...)
 }
 
-func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID) error {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID, opts ...types.DeleteOption) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
+
+	if err := r.CrudRepository.Delete(c, id, opts...); err != nil {
+		return err
+	}
+
 	if err := r.cache.Delete(c, types.FormatID(id)); err != nil {
 		return err
 	}
-	return r.CrudRepository.Delete(c, id)
+	return nil
 }
 
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
@@ -71,7 +76,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, i
 	return r.CrudRepository.Update(c, id, updateDTO, opts...)
 }
 
-func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types.ID) (*DTO, error) {
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types.ID, opts ...types.GetOption) (*DTO, error) {
 	// 查缓存用双重检查锁
 	cacheKey := types.FormatID(id)
 	dto := new(DTO)
@@ -99,7 +104,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id t
 		return dto, nil
 	}
 	// 未命中缓存
-	dto, err = r.CrudRepository.Get(c, id)
+	dto, err = r.CrudRepository.Get(c, id, opts...)
 	if err != nil {
 		return nil, err
 	}
