@@ -13,7 +13,7 @@ type multiTenantDataSource[DB any] struct {
 	idbGetter DBGetter
 }
 
-func NewMultiTenantDataSource[DB any](tenantKey string, dbGetter) DataSource[DB] {
+func NewMultiTenantDataSource[DB any](tenantKey string, dbGetter DBGetter) DataSource[DB] {
 	return &multiTenantDataSource[DB]{
 		tenantKey,
 		dbGetter,
