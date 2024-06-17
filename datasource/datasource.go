@@ -5,14 +5,14 @@ import(
 )
 
 type DataSource[DB any] interface {
-	GetDB(ctx ctx.Context) (*DB, error)
+	GetDB(ctx context.Context) (*DB, error)
 }
 
 type dataSource[DB any] struct {
 	db *DB
 }
 
-func NewDataSource[DB any](db DB) DataSource[DB] {
+func NewDataSource[DB any](db *DB) DataSource[DB] {
 	return &dataSource[DB]{
 		db,
 	}
