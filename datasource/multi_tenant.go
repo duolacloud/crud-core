@@ -5,7 +5,7 @@ import(
 )
 
 type DBGetter[DB any] interface {
-	Get(ctx context.Context, tenantKey string) (*DB, error)
+	Get(ctx context.Context, tenantId string) (*DB, error)
 }
 
 type multiTenantDataSource[DB any] struct {
@@ -21,10 +21,13 @@ func NewMultiTenantDataSource[DB any](tenantKey string, dbGetter DBGetter) DataS
 }
 
 func (s *multiTenantDataSource[DB]) GetDB(ctx context.Context) (*DB, error) {
-	dbKey := ctx.Value(s.key)
-	if db == nil {
-		return nil, fmt.Errorf("db not found for %v", key)
+	tenantId, ok := ctx.Value(s.tenantKey).(string)
+	if !ok {
+		return nil, fmt.Errorf("invalid value, value for tenant key not string", key)
 	}
 
-	return s.dbGetter.Get(ctx, tenantKey)
+	db, err := s.dbGetter.Get(ctx, tenantId)
+	if err != nil {
+		return nil, err
+	}
 }
