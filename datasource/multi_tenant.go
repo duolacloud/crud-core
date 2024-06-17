@@ -10,7 +10,7 @@ type DBGetter[DB any] interface {
 
 type multiTenantDataSource[DB any] struct {
 	tenantKey string
-	idbGetter DBGetter
+	dbGetter DBGetter
 }
 
 func NewMultiTenantDataSource[DB any](tenantKey string, dbGetter DBGetter) DataSource[DB] {
@@ -30,4 +30,5 @@ func (s *multiTenantDataSource[DB]) GetDB(ctx context.Context) (*DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	return db, nil
 }
