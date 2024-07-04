@@ -20,3 +20,7 @@ func (n *noopCache) Set(c context.Context, key string, value any, opts ...SetOpt
 func (n *noopCache) Delete(c context.Context, key string, opts ...DeleteOption) error {
 	return nil
 }
+
+func (n *noopCache) Exists(c context.Context, key string) (bool, error) {
+	return false, nil
+}
