@@ -17,20 +17,25 @@ type Options struct {
 
 type Option func(*Options)
 
+
+type ID interface {
+	ID() string
+}
+
 func WithPrefix(v string) Option {
 	return func(o *Options) {
 		o.prefix = v
 	}
 }
 
-type event[DTO any, CreateDTO any, UpdateDTO any] struct {
+type event[DTO ID, CreateDTO any, UpdateDTO any] struct {
 	broker broker.Broker
 	CrudService[DTO, CreateDTO, UpdateDTO]
 	domain string
 	opts *Options
 }
 
-func WrapEvent[DTO any, CreateDTO any, UpdateDTO any](
+func WrapEvent[DTO ID, CreateDTO any, UpdateDTO any](
 	svc CrudService[DTO, CreateDTO, UpdateDTO],
 	broker broker.Broker,
 	o ...Option,
@@ -139,7 +144,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Aggregate(
 	return s.CrudService.Aggregate(c, filter, aggregateQuery)
 }
 
-func publish(c context.Context, b broker.Broker, topic string, data any) error {
+func publish(c context.Context, b broker.Broker, topic string, data DTO) error {
 	body, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -147,7 +152,7 @@ func publish(c context.Context, b broker.Broker, topic string, data any) error {
 
 	return b.Publish(c, topic, &broker.Message{
 		Body: body,
-	})
+	}, broker.WithShardingKey(data.ID()))
 }
 
 func domainCreated(prefix, domain string) string {
