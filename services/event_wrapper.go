@@ -11,16 +11,35 @@ import (
 	"github.com/duolacloud/crud-core/types"
 )
 
+type Options struct {
+	prefix string
+}
+
+type Option func(*Options)
+
+func WithPrefix(v string) {
+	return func(o *Options) {
+		return o.prefix = v
+	}
+}
+
 type event[DTO any, CreateDTO any, UpdateDTO any] struct {
 	broker broker.Broker
 	CrudService[DTO, CreateDTO, UpdateDTO]
 	domain string
+	opts *Options
 }
 
 func WrapEvent[DTO any, CreateDTO any, UpdateDTO any](
 	svc CrudService[DTO, CreateDTO, UpdateDTO],
 	broker broker.Broker,
+	o ...Option,
 ) CrudService[DTO, CreateDTO, UpdateDTO] {
+	opts := &Options{}
+	for _, opt := range o {
+		opt(opts)
+	}
+
 	var m DTO
 	appType := reflect.TypeOf(m)
 	domain := strings.ToLower(appType.Name())
@@ -30,6 +49,7 @@ func WrapEvent[DTO any, CreateDTO any, UpdateDTO any](
 		broker:      broker,
 		p:           p,
 		domain:     domain,
+		opts:	    opts,
 	}
 }
 
@@ -39,7 +59,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, dto *Create
 		return nil, err
 	}
 
-	err = publish(c, s.broker, domainCreated(s.domain), newDto)
+	err = publish(c, s.broker, domainCreated(s.opts.prefix, s.domain), newDto)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +74,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items [
 	}
 
 	for _, dto := range dtos {
-		err = publish(c, s.broker, domainCreated(s.domain), dto)
+		err = publish(c, s.broker, domainCreated(s.opts.prefix, s.domain), dto)
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +94,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID
 		return err
 	}
 
-	err = publish(c, s.broker, domainCreated(s.domain), dto)
+	err = publish(c, s.broker, domainDeleted(s.opts.prefix, s.domain), dto)
 	if err != nil {
 		return err
 	}
@@ -88,7 +108,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id types.ID
 		return nil, err
 	}
 
-	err = publish(c, s.broker, domainUpdated(s.domain), dto)
+	err = publish(c, s.broker, domainUpdated(s.opts.prefix, s.domain), dto)
 	if err != nil {
 		return nil, err
 	}
@@ -131,15 +151,24 @@ func publish(c context.Context, b broker.Broker, topic string, data any) error {
 	})
 }
 
-func domainCreated(domain any) string {
-	return fmt.Sprintf("%s_created", domain)
+func domainCreated(prefix, domain string) string {
+	if prefix != "" {
+		prefix += "_"
+	}
+	return fmt.Sprintf("%s%s_created", prefix, domain)
 }
 
-func domainDeleted(domain any) string {
-	return fmt.Sprintf("%s_deleted", domain)
+func domainDeleted(prefix, domain string) string {
+	if prefix != "" {
+		prefix += "_"
+	}
+	return fmt.Sprintf("%s%s_deleted", domain)
 }
 
-func domainUpdated(domain any) string {
-	return fmt.Sprintf("%s_updated", domain)
+func domainUpdated(prefix, domain string) string {
+	if prefix != "" {
+		prefix += "_"
+	}
+	return fmt.Sprintf("%s%s_updated", domain)
 }
 
