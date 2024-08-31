@@ -47,7 +47,6 @@ func WrapEvent[DTO any, CreateDTO any, UpdateDTO any](
 	return &event[DTO, CreateDTO, UpdateDTO]{
 		CrudService: svc,
 		broker:      broker,
-		p:           p,
 		domain:     domain,
 		opts:	    opts,
 	}
