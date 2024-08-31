@@ -144,7 +144,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Aggregate(
 	return s.CrudService.Aggregate(c, filter, aggregateQuery)
 }
 
-func publish[DTO ID](c context.Context, b broker.Broker, topic string, data DTO) error {
+func publish[DTO ID](c context.Context, b broker.Broker, topic string, data *DTO) error {
 	body, err := json.Marshal(data)
 	if err != nil {
 		return err
