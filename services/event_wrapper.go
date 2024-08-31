@@ -8,22 +8,21 @@ import (
 	"strings"
 
 	"github.com/duolacloud/broker-core"
-	"github.com/duolacloud/crud-core/services"
 	"github.com/duolacloud/crud-core/types"
 	"github.com/gertd/go-pluralize"
 )
 
 type event[DTO any, CreateDTO any, UpdateDTO any] struct {
 	broker broker.Broker
-	services.CrudService[DTO, CreateDTO, UpdateDTO]
+	CrudService[DTO, CreateDTO, UpdateDTO]
 	p       *pluralize.Client
 	domains string
 }
 
 func WrapEvent[DTO any, CreateDTO any, UpdateDTO any](
-	svc services.CrudService[DTO, CreateDTO, UpdateDTO],
+	svc CrudService[DTO, CreateDTO, UpdateDTO],
 	broker broker.Broker,
-) services.CrudService[DTO, CreateDTO, UpdateDTO] {
+) CrudService[DTO, CreateDTO, UpdateDTO] {
 	p := pluralize.NewClient()
 
 	var m DTO
