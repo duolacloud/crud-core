@@ -19,7 +19,7 @@ type Option func(*Options)
 
 func WithPrefix(v string) {
 	return func(o *Options) {
-		return o.prefix = v
+		o.prefix = v
 	}
 }
 
