@@ -17,7 +17,7 @@ type Options struct {
 
 type Option func(*Options)
 
-func WithPrefix(v string) {
+func WithPrefix(v string) Option {
 	return func(o *Options) {
 		o.prefix = v
 	}
