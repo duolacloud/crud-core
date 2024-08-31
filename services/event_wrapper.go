@@ -9,32 +9,27 @@ import (
 
 	"github.com/duolacloud/broker-core"
 	"github.com/duolacloud/crud-core/types"
-	"github.com/gertd/go-pluralize"
 )
 
 type event[DTO any, CreateDTO any, UpdateDTO any] struct {
 	broker broker.Broker
 	CrudService[DTO, CreateDTO, UpdateDTO]
-	p       *pluralize.Client
-	domains string
+	domain string
 }
 
 func WrapEvent[DTO any, CreateDTO any, UpdateDTO any](
 	svc CrudService[DTO, CreateDTO, UpdateDTO],
 	broker broker.Broker,
 ) CrudService[DTO, CreateDTO, UpdateDTO] {
-	p := pluralize.NewClient()
-
 	var m DTO
 	appType := reflect.TypeOf(m)
-	typeName := strings.ToLower(appType.Name())
-	domains := p.Plural(typeName)
+	domain := strings.ToLower(appType.Name())
 
 	return &event[DTO, CreateDTO, UpdateDTO]{
 		CrudService: svc,
 		broker:      broker,
 		p:           p,
-		domains:     domains,
+		domain:     domain,
 	}
 }
 
@@ -44,7 +39,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Create(c context.Context, dto *Create
 		return nil, err
 	}
 
-	err = publish(c, s.broker, domainCreated(s.domains), newDto)
+	err = publish(c, s.broker, domainCreated(s.domain), newDto)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +54,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) CreateMany(c context.Context, items [
 	}
 
 	for _, dto := range dtos {
-		err = publish(c, s.broker, domainCreated(s.domains), dto)
+		err = publish(c, s.broker, domainCreated(s.domain), dto)
 		if err != nil {
 			return nil, err
 		}
@@ -79,7 +74,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, id types.ID
 		return err
 	}
 
-	err = publish(c, s.broker, domainCreated(s.domains), dto)
+	err = publish(c, s.broker, domainCreated(s.domain), dto)
 	if err != nil {
 		return err
 	}
@@ -93,7 +88,7 @@ func (s *event[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id types.ID
 		return nil, err
 	}
 
-	err = publish(c, s.broker, domainUpdated(s.domains), dto)
+	err = publish(c, s.broker, domainUpdated(s.domain), dto)
 	if err != nil {
 		return nil, err
 	}
