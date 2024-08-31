@@ -152,7 +152,7 @@ func publish[DTO ID](c context.Context, b broker.Broker, topic string, data *DTO
 
 	return b.Publish(c, topic, &broker.Message{
 		Body: body,
-	}, broker.WithShardingKey(data.ID()))
+	}, broker.WithShardingKey((*data).ID()))
 }
 
 func domainCreated(prefix, domain string) string {
