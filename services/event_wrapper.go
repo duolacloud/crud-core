@@ -132,14 +132,14 @@ func publish(c context.Context, b broker.Broker, topic string, data any) error {
 }
 
 func domainCreated(domain any) string {
-	return fmt.Sprintf("%s_CREATED", domain)
+	return fmt.Sprintf("%s_created", domain)
 }
 
 func domainDeleted(domain any) string {
-	return fmt.Sprintf("%s_DELETED", domain)
+	return fmt.Sprintf("%s_deleted", domain)
 }
 
 func domainUpdated(domain any) string {
-	return fmt.Sprintf("%s_UPDATED", domain)
+	return fmt.Sprintf("%s_updated", domain)
 }
 
