@@ -166,13 +166,13 @@ func domainDeleted(prefix, domain string) string {
 	if prefix != "" {
 		prefix += "_"
 	}
-	return fmt.Sprintf("%s%s_deleted", domain)
+	return fmt.Sprintf("%s%s_deleted", prefix, domain)
 }
 
 func domainUpdated(prefix, domain string) string {
 	if prefix != "" {
 		prefix += "_"
 	}
-	return fmt.Sprintf("%s%s_updated", domain)
+	return fmt.Sprintf("%s%s_updated", prefix, domain)
 }
 
