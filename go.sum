@@ -1,12 +1,14 @@
-github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/duolacloud/broker-core v0.0.4 h1:s+zZ+CTKfTr/7Mv8yccAQTp65uHTsgL62WmZ4AWX1tk=
-github.com/duolacloud/broker-core v0.0.4/go.mod h1:bthNWNlkCKtpcB5qRsGefz8+tmVp1TDMCu4b/0wdkB4=
 github.com/duolacloud/broker-core v0.0.5-0.20240605111610-c8619ff3e84b h1:Nka1PsFJuriDQVWnf9cElgtmsXfsAHNknMh2K7AcebY=
 github.com/duolacloud/broker-core v0.0.5-0.20240605111610-c8619ff3e84b/go.mod h1:kJo0yD81jOttBPXwJoJd23Y1M7qaiCKWMSZ2uOlClVA=
+github.com/duolacloud/broker-core v0.0.6 h1:6MfyGn/Y2AEpywggtkAMAGPCKm0/Z1i2DEE4p599Njw=
+github.com/duolacloud/broker-core v0.0.6/go.mod h1:kJo0yD81jOttBPXwJoJd23Y1M7qaiCKWMSZ2uOlClVA=
 github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

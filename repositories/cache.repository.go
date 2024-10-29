@@ -3,6 +3,9 @@ package repositories
 import (
 	"context"
 	"errors"
+	"fmt"
+	"reflect"
+	"strings"
 	"sync"
 	"time"
 
@@ -24,9 +27,10 @@ func WithExpiration(expiration time.Duration) CacheRepositoryOption {
 
 type CacheRepository[DTO any, CreateDTO any, UpdateDTO any] struct {
 	CrudRepository[DTO, CreateDTO, UpdateDTO]
-	cache   core_cache.Cache
-	mutex   sync.Mutex
-	options *CacheRepositoryOptions
+	cache     core_cache.Cache
+	mutex     sync.Mutex
+	options   *CacheRepositoryOptions
+	modelName string
 }
 
 func NewCacheRepository[DTO any, CreateDTO any, UpdateDTO any](
@@ -34,14 +38,21 @@ func NewCacheRepository[DTO any, CreateDTO any, UpdateDTO any](
 	cache core_cache.Cache,
 	opts ...CacheRepositoryOption,
 ) CrudRepository[DTO, CreateDTO, UpdateDTO] {
+	options := &CacheRepositoryOptions{}
+	for _, opt := range opts {
+		opt(options)
+	}
+
+	var dto DTO
+	modelName := strings.ToLower(reflect.TypeOf(dto).Name())
+
 	repo := &CacheRepository[DTO, CreateDTO, UpdateDTO]{
 		CrudRepository: repository,
 		cache:          cache,
-		options:        &CacheRepositoryOptions{},
+		options:        options,
+		modelName:      modelName,
 	}
-	for _, opt := range opts {
-		opt(repo.options)
-	}
+
 	return repo
 }
 
@@ -61,7 +72,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, i
 		return err
 	}
 
-	if err := r.cache.Delete(c, types.FormatID(id)); err != nil {
+	if err := r.cache.Delete(c, r.formatCacheKey(id)); err != nil {
 		return err
 	}
 	return nil
@@ -70,7 +81,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Delete(c context.Context, i
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, id types.ID, updateDTO *UpdateDTO, opts ...types.UpdateOption) (*DTO, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
-	if err := r.cache.Delete(c, types.FormatID(id)); err != nil {
+	if err := r.cache.Delete(c, r.formatCacheKey(id)); err != nil {
 		return nil, err
 	}
 	return r.CrudRepository.Update(c, id, updateDTO, opts...)
@@ -78,7 +89,7 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Update(c context.Context, i
 
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Get(c context.Context, id types.ID, opts ...types.GetOption) (*DTO, error) {
 	// 查缓存用双重检查锁
-	cacheKey := types.FormatID(id)
+	cacheKey := r.formatCacheKey(id)
 	dto := new(DTO)
 
 	err := r.cache.Get(c, cacheKey, dto)
@@ -140,4 +151,8 @@ func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) Aggregate(
 
 func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) CursorQuery(c context.Context, query *types.CursorQuery) ([]*DTO, *types.CursorExtra, error) {
 	return r.CrudRepository.CursorQuery(c, query)
+}
+
+func (r *CacheRepository[DTO, CreateDTO, UpdateDTO]) formatCacheKey(key any) string {
+	return types.FormatID(fmt.Sprintf("%s.%v", r.modelName, key))
 }
